@@ -1,0 +1,59 @@
+
+\documentclass[12pt]{amsart}
+\usepackage[margin=1in]{geometry} % see geometry.pdf on how to lay out the page. There's lots.
+ % or letter or a5paper or ... etc
+% \geometry{landscape} % rotated page geometry
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage[]{algorithm2e}
+% See the ``Article customise'' template for come common customisations
+
+\title{Homework: Complexity and Energy Usage}
+\date{} % delete this line to display the current date
+
+%%% BEGIN DOCUMENT
+\begin{document}
+
+\maketitle
+
+\noindent \emph{The Python 3 \texttt{energyusage} package needed for this homework only runs on a Linux computer with the RAPL interface (an Intel CPU).  The package can be installed by running: \texttt{pip install energyusage}.}
+
+%% Suggestion to instructors: change the below 50,000,000 to be the operations per second of your student lab computers.
+
+\begin{enumerate}[a)]
+\item In Python, make functions that have the exact below complexity:
+	\begin{enumerate}[i)]
+	\item $50000000 \cdot n$
+	\item $50000000 \cdot n^2$
+	\item $50000000 \cdot 2^n$
+	\end{enumerate}
+\item \label{n} Suppose you have a computer that can perform $50,000,000$ operations per second.  For each of the functions, determine the largest input size $n$ for which you can determine the result within 5 minutes.
+\item Run each of the functions above, varying $n$ from $1$ to the number you determined in part \ref{n}.  Run those functions using the \texttt{energyusage} package on a Linux computer with an Intel processor.  The package will give you the information you'll need for the graphs in part \ref{graph}.  An example run on a simple function $f$ with input $x$ and return value $y$ is:
+	\begin{verbatim}
+	secs, kwh, y = energyusage.evaluate(f, x, energyOutput=True)
+	\end{verbatim}
+where \texttt{kwh} is the resulting energy usage in kilowatt hours, and the time used is also returned (in seconds).   If you are running on a machine that performs \emph{approximately} $50,000,000$ operations per second, note that you can test your above calculations in this step, but they may not match exactly.
+\item \label{graph} Make two graphs for each of the functions above:
+	\begin{enumerate}[i)]
+	\item a graph showing $n$ on the x-axis versus time (in seconds) on the y-axis, and
+	\item a graph showing $n$ on the x-axis versus energy usage (in kilowatt hours) on the y-axis.
+	\end{enumerate}
+	You may use whatever graphing software or package you prefer to create these graphs.  Make sure you have properly labeled the axes and titled your graphs. 
+\item \label{co2} The power plants supplying electricity to your computer emit between 2.4 and 1.1 pounds of carbon dioxide per kWh. 
+Which function minimizes the amount of carbon dioxide emitted for $n=5$?  What about in total over $5$ minutes?
+\item \label{para} What do you notice about the graphs?  Describe any conclusions you have reached about computational complexity and energy ``complexity," along with any caveats to these conclusions.
+\end{enumerate}
+~\\
+\noindent Your handed in solution to this homework should include:
+\begin{enumerate}[a)]
+\item The functions you wrote.
+\item The values of $n$ you determined.
+\item[\ref{graph})] Two graphs for each function (a total of 6 graphs).
+\item[\ref{co2})]  A sentence or two.
+\item[\ref{para})] A short paragraph describing your conclusions.
+\end{enumerate}
+
+
+
+
+\end{document}
