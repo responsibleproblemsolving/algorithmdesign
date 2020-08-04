@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Notes for High Speed Internet Problem</title>
+
+    <!-- Bootstrap core CSS -->
+    <!-- <link href="../../bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Callout css from Chris Pratt: http://cpratt.co/twitter-bootstrap-callout-css-styles/--->
+    <link href="css/callout.css" rel="stylesheet">
+    <!-- Font awesome-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  </head>
+
+  <body role="document">
+
+
+    <!-- TOC -->
+    <div id="toc"></div>
+
+    <div class="container theme-showcase" role="main">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Notes for High Speed Internet problem</h1>
+            <p>Notes for the <a href="problem.html">High Speed Internet problem</a>.</p>
+            <p><i>Material Developed by:</i> <a href="https://cse.buffalo.edu/faculty/atri/">Atri Rudra</a></p>
+      </div>
+
+
+     <div class="page-header">
+
+        <h2>Problem Overview</h2>
+            <p>We begin with an example input to show the solutions to both part <kbd>(a)</kbd> and <kbd>(b)</kbd> (and in particular, pointing out why solving part <kbd>(a)</kbd> does not solve part <kbd>(b)</kbd>):
+                    <div class="bs-callout bs-callout-success">
+                        <h4>Sample Input/Outputs</h4>
+
+                            <ul>
+                                <li><kbd>Input:</kbd>
+                                    <p><img src="figs/Q2-input.png"></p>
+                                    <p>In the above $n=5$ and we have a cell tower at the first house since that is mandated by the problem. Also note that any two consecutive houses are at most $99$ miles apart (actually the largest distance in the above is $90$ miles). Note that in this case a valid input your algorithm should handle is $[ (1, 120), (2, 50), (3, 250), (4, 160) ]$, where in each pair the first index refers to a house (so in the example above the houses in order are $2,1,4,3$) and the second element of a pair is the distance in miles from the first house.</p>
+                                </li>
+                                <li><kbd>Solution for part (a):</kbd> Here is an optimal solution for part <kbd>(a)</kbd> for the above input:
+                                    <p><img src="figs/Q2(a)-soln.png"></p>
+                                    <p>Here is a quick visual argument for the above leads to continuous cell coverage:
+                                    <p><img src="figs/Q2(a)-cover.png"></p>
+                                    <p>We will see shortly that this is an optimal assignment for part <kbd>(a)</kbd>.</p>
+                                </li>
+                                <li><kbd>Solution for part (b):</kbd> Here is an optimal solution for part <kbd>(b)</kbd> for the above input:
+                                    <p><img src="figs/Q2(b)-soln.png"></p>
+                                    <p>Here is a quick visual argument for the above leads to continuous cell coverage:
+                                    <p><img src="figs/Q2(b)-cover.png"></p>
+                                    <p>We will not prove it, but this is an optimal assignment for part <kbd>(b)</kbd>.</p>
+                                </li>
+                            </ul>
+                    </div>
+            </p>
+
+        <h2>Part <kbd>(a)</kbd></h2>
+                    <div class="bs-callout bs-callout-info">
+                        <h4>Algorithm Idea</h4>
+                            <p>The idea is very simple: since we do not have any restriction on where the cell towers can be placed: we will place them at multiple of $100$ mile marks till there is continuous coverage from the first to the last house.</p>
+                    </div>
+
+                    <div class="bs-callout bs-callout-warning">
+                        <h4>Even though it is not needed for the HW submission</h4>
+                            <p>We provide the algorithm details and proof of correctness idea below for your convenience.</p>
+                    </div>
+
+                                <div class="bs-callout bs-callout-success">
+                                <h4>Algorithm Details</h4>
+                                    <p>
+                                    <pre class="prettyprint linenums" lang="python">
+                                    //Input is (h<sub>1</sub>,d<sub>1</sub>), ... , (h<sub>n-1</sub>,d<sub>n-1</sub>)  
+                                    // d<sub>i</sub> is the distance of house h<sub>i</sub> from the first house
+
+                                    d<sub>max</sub>= max(d<sub>1</sub>, ... ,d<sub>n-1</sub>)
+
+                                    d=0 //Assuming the first house is at mile 0
+                                    while( d &lt; d<sub>max</sub>)
+                                        Place a tower at mile d
+                                        d += 100
+                                        </pre>
+                                </div>
+                    </div>
+
+                    <div class="bs-callout bs-callout-info">
+                    <h4>Proof (of Correctness) Idea</h4>
+                        <p>First note that the algorithm above places $\left\lceil \frac{d_{\max}}{100}\right\rceil$ many cell towers.</p>
+                        <p>To complete the proof, we claim that any valid placement of towers must place at least $\left\lceil \frac{d_{\max}}{100}\right\rceil$ cell towers. For the sake of contradiction assume that we are able to come up with a valid placement with
+\[\le \left\lceil \frac{d_{\max}}{100}\right\rceil -1 &lt; \frac{d_{\max}}{100}\]
+cell towers. Since each cell tower can cover $100$ miles, this means that the total number of miles covered will be 
+\[&lt;100\cdot \left(\frac{d_{\max}}{100}\right) = d_{\max},\]
+                        which means at least $1$ mile from the first house and the last house does not have cell coverage, which means that our placement was not valid.
+                    </div>
+
+                    <div class="bs-callout bs-callout-success">
+                    <h4>Runtime analysis</h4>
+                        <p>We will assume the following, which you need to prove on your own:
+                            <div class="bs-callout bs-callout-warning">
+                                <h4>Exercise 1</h4>       
+                                    <p>\[d_{\max}\le 99n.\]
+                            </div>
+                            This implies that the <code>while</code> runs for at most $99n/100\le n$ times. Each iteration takes $O(1)$ time: so overall the loop takes $O(n)$ time. Since computing $d_{\max}$ takes $O(n)$ time, the overall runtime is $O(n)$, as desired.
+                    </div>
+
+
+        <h2>Part <kbd>(b)</kbd></h2>
+            <p>We would like to point out two things:
+                <ol>
+                    <li>The algorithm above for part <kbd>(a)</kbd> does not work for part <kbd>(b)</kbd>. The basic idea is that the algorithm from part <kbs>(a)</kbd> can place a cell tower at a mile where there is no house but for part <kbd>(b)</kbd> the cell towers <i>have</i> to be at a  house. See the sample input/output above for a concrete example.</li>
+                    <li>Think how you could modify the algorithm for part <kbd>(a)</kbd> could be modified to handle the extra restriction that the cell towers have to placed next to a house.
+            <div class="bs-callout bs-callout-success">
+            <h4><i class="fa fa-key"></i> Hint</h4>
+            <p>Think of a greedy way to decide on which houses to pick for cell tower installation. It might help to forget about the scheduling algorithms we have seen in class and just think of a greedy algorithm
+from "scratch." Then try to analyze the algorithm using similar arguments to one we have seen in class.
+                </p>
+            </div>
+                            <div class="bs-callout bs-callout-warning">
+                                <h4>Note</h4>
+                                    <p>The proof idea for part <kbd>(a)</kbd> does not work for part <kbd>(b)</kbd>: you are encouraged to use one of the proof techniques we have seen in class to prove correctness of a greedy algorithm.</p>
+                            </div>
+            </li>
+                </ol>
+            </p>
+
+
+
+    </div> <!-- /container -->
+
+<!--- Footer --->
+
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="footer-copyright wow fadeIn">
+                        <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
+                    </div>
+                    <div class="col-sm-5 footer-social wow fadeIn">
+                    </div>
+                </div>
+            </div>
+        </footer>
+<!--
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">Built with <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="http://p5js.org/">p5</a> and <a href="http://www.bigfootjs.com/">bigfoot</a>.</p>
+      </div>
+    </footer>
+-->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!--<script src="../../assets/js/docs.min.js"></script>-->
+
+	<!--- Google prettify for syntax highlighting-->
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+	<!--- MathJax for LaTeX-->
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+  		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+
+	<!-- JS for Tocify -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<script src="../../js/jquery.tocify.min.js"></script>
+<!--	<script type="text/javascript">
+		$("#toc").tocify();
+	</script>
+-->
+
+	<!-- Bigfoot for footnotes-->
+	<script type="text/javascript" src="../../../support/js/bigfoot.js"></script>
+	<script type="text/javascript">
+    		$.bigfoot();
+	</script>
+
+	<!-- uncomment lines below to include extra p5 libraries -->
+        <!--<script language="javascript" src="../addons/p5.dom.js"></script>-->
+  	<!--<script language="javascript" src="../addons/p5.sound.js"></script>-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.6/p5.js"></script>
+
+  </body>
+</html>

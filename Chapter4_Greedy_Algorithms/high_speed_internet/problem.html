@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>High Speed Internet Problem</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Callout css from Chris Pratt: http://cpratt.co/twitter-bootstrap-callout-css-styles/--->
+    <link href="css/callout.css" rel="stylesheet">
+    <!-- Font awesome-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  </head>
+
+  <body role="document">
+
+    <!-- Fixed navbar -->
+        <div id="nav-content"></div>
+
+    <!-- TOC -->
+    <div id="toc"></div>
+
+    <div class="container theme-showcase" role="main">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>High Speed Internet</h1>
+            <p>Grreedy algorithm problem</p>
+            <p>Here are <a href="notes.html">some extra notes</a> that can be used in a recitation</p>
+            <p><i>Material Developed by:</i> <a href="https://cse.buffalo.edu/faculty/atri/">Atri Rudra</a></p>
+      </div>
+
+
+     <div class="page-header">
+
+<!--
+  <div class="footnotes"><ol>
+        <li class="footnote" id="fn:1">
+                    <p>Lest you think I have anything against liberals, let me assure you that my brother-in-law has “termed" me and my wife as
+being liberal elites.</p>
+        </li>
+    </ol>
+  </div>
+-->
+
+
+
+
+            <div class="bs-callout bs-callout-primary">
+            <h4>The Problem</h4>
+
+                <p>We come back to the issue of many USA regions not having high speed internet. In this question, you will consider an algorithmic problem that you would need to solve to help out a (fictional) place get high speed Internet.</p>
+                <p>You are the algorithms whiz in the effort to bring high speed Internet to <code>SomePlaceInUSA</code>. After lots of rounds of discussions and public feedback, it was decided that the most cost-effective way to bring high speed internet to <code>SomePlaceInUSA</code> was to install high speed cell towers to connect all houses in <code>SomePlaceInUSA</code> to high speed internet. There are two things in your favor:
+                    <ol>
+                        <li>It just so happens that all of  the $n$ houses in <code>SomePlaceInUSA</code> are on the side of a straight road that runs through the town.</li>
+                        <li>The above implies that you only need cell towers that only need to broadcast their signal in a narrow range, which means one cell tower can provide high speed internet access to all houses within $100$ miles <i>ahead</i> (rather than the usual <a href="https://en.wikipedia.org/wiki/Cell_site#Range" target="_blank">45 mile range <i class="fa fa-external-link fa-sm"></i></a>) on the road from its location (we are assuming that these cell towers will be on the side of the road). These cell towers are unidirectional so they can provide connection to only houses that are ahead of it.</li>
+                    </ol>
+                    Due to various logistical reasons, the cell towers have to be on the side of the straight road and right next to a house.
+                </p>
+                <p> None of your team-mates attended the class on greedy algorithms, so
+in this problem you will design an efficient algorithm for them, which your team can use to figure out which houses  should have cell towers installed next to them so as to <i>use the minimum number of cell towers</i>.</p>
+
+                <p>With an eye on the future, the cell towers have to be placed so that there is continuous cell coverage on the road from the first and the last house on the road. I.e. it should never be the case that you are on the road (between the first and the last house) such that you are
+strictly more than $100$ miles <i>ahead</i> of the closest cell tower.  You can assume that you have to put a cell tower at the first house on the road in <code>SomePlaceInUSA</code>.
+                </p>
+                    <div class="bs-callout bs-callout-warning">
+                        <h4>Note</h4>
+                            <p>You should assume the following for your algorithm:
+                                <ul>
+                                    <li>No two consecutive houses are more than $99$ miles apart. Note that this implies there always exists a feasible way to assign cell towers to houses. Further, note that houses can be much closer than $99$ miles to each other.</li>
+                                    <li>The input to your algorithm is a list of houses along with their distance (in miles) from the very first house. You cannot assume that this list is sorted in any way.</li>
+                                </ul>
+                            </p>
+                    </div>
+
+                <p>Here are the two two parts of the problem:
+                    <ul>
+                        <li> Part <kbd>(a)</kbd>: Assume that we relax the condition that the cell towers have to be next to house: i.e. you can place a cell tower anywhere on the road (the $100$ mile coverage restriction on the cell towers still applies). Design an $O(n)$ time algorithm to solve this related problem.</p>
+                        <li> Part <kbd>(b)</kbd>: Design an $O(n\log{n})$ time algorithm to solve the original problem (i.e. where the cell towers have to be next to a house). Prove the correctness of your algorithm and analyze its running time.</li>
+                    </ul>
+
+
+
+            </p>
+
+
+            </div>
+
+            <div class="bs-callout bs-callout-success">
+            <h4><i class="fa fa-key"></i> Hint</h4>
+            <p>Think of a greedy way to decide on which houses to pick for cell tower installation. It might help to forget about the scheduling algorithms we have seen in class and just think of a greedy algorithm
+from "scratch." Then try to analyze the algorithm using similar arguments to one we have seen in class.
+                </p>
+            </div>
+
+                <div class="bs-callout bs-callout-danger">
+                    <h4><i class="fa fa-ban"></i> Common Mistake</h4>
+                        <p>One common mistake is to present a correct greedy algorithm to solve this problem but then not proving that their algorithm is optimal, i.e. among all feasible assignments of cell towers to houses (i.e. all allocations that result in high speed internet in all houses in <code>SomePlaceInUSA</code>) the algorithms output should have the fewest number of cell towers in them.</p>
+                </div>
+
+                <h3>Walkthrough video</h3>
+                    <!--<p><code>NOTE:</code> The old walkthrough video has an incorrect example where it shows a cell tower assignment that covers all current houses but not all sections of the road. We'll update the video as soon as possible.</p>-->
+
+                <p>Here is the walkthrough video (thanks to <a href="https://www.linkedin.com/in/imanabdul/" target="_blank">Iman Abdul-Rashed <i class="fa fa-external-link fa-sm"></i></a> for the video):
+
+
+            <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe class="embed-responsive-item" width="50%" src="https://www.youtube.com/embed/VvforeWWXhE" allowfullscreen></iframe>
+                            </div>
+                    </div>
+            </div>
+
+                </p>
+
+
+
+
+  <h1>Question 3 (Programming Assignment) [25 points]</h1>
+
+
+        <div class="bs-callout bs-callout-danger">
+            <h4><i class="fa fa-code"></i> Note</h4>
+            <p>This assignment can be solved in either Java, Python or C++ (you should pick the language you are most comfortable with). Please make sure to look at the supporting documentation and files for the language of your choosing.</p>
+        </div>
+        <div class="bs-callout bs-callout-primary">
+            <h4>The Problem</h4>
+
+
+        <p>
+        The <code>TennisSuperVillian</code> is hell-bent on destroying earth. Humans have one last hope:
+		the great tennis player <a href="https://en.wikipedia.org/wiki/Serena_Williams">Serena Williams <i class="fa fa-external-link fa-sm"></i></a>:
+                        <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6">
+                                        <div class="embed-responsive embed-responsive-16by9">
+                                                <iframe class="embed-responsive-item" width="50%" src="https://www.youtube.com/embed/F1nI2BV2CR0" allowfullscreen></iframe>
+                                       </div>
+                                </div>
+                        </div>
+        </p>
+
+        <p>Serena has two choices to neutralize <code>TennisSuperVillian</code>.
+		The first choice is to nuke <code>TennisSuperVillian</code>’s hideout. The second choice is to defeat the <code>TennisSuperVillian</code> in his own game. Serena has to beat <code>TennisSuperVillian</code> in $n$ special rallies. The $i^{th}$
+		rally ($0\leq i\leq n-1$) needs a given amount of time $t_{i}$ and it has to be finished by time $f_{i}$ . Each of these
+		rallies are complex and (even) Serena can only play one rally at a time and each rally once it has
+		been started has to be completed without interruption (otherwise <code>TennisSuperVillian</code> wins
+		and the earth gets destroyed). <code>TennisSuperVillian</code> is cunning and has made sure that the only way
+		to defeat him is to finish each rally $i$ by time $f_{i}$ . You should also assume that Serena cannot
+		start any of the rallies before time 0. (Also assume that all the $t_{i}$ and $f_{i}$ are positive integers.)</p>
+
+		<p>
+		Serena also has intelligence that <code>TennisSuperVillian</code> has planned an imminent attack soon and she
+		does not have time to try out both choices. </p>
+
+		<p>
+		Obviously Serena wants to avoid the first choice because of the collateral damage. However, as
+		mentioned earlier time is short and Serena needs to decide if she can go with the second choice.
+		During her training, she skipped the class on greedy algorithms. Your task is to design an algorithm for Serena that will help her make her decision in time
+		$O(n \log(n))$. </p>
+
+            <h4>Input</h4>
+            <ul>
+            	<li> The first line of the input file will have the number $n$, indicating the number of rallies</li>
+            	<li> The next $n$ lines will have the durations ($t_{i}$) and deadlines ($f_{i}$)  for the $n$ rallies (separated by spaces)</li>
+            	<li> The index of the line under consideration is the ID of that rally. For instance line 0 of the input file (not including the line displaying $n$) has the duration ($t_{0}$) and deadline ($f_{0}$) of rally 0
+            </ul>
+
+            <pre class="prettyprint">
+            	n		<- Number of rallies Serena has to play
+                t<sub>0</sub> f<sub>0</sub>		<- Duration t<sub>0</sub> and deadline f<sub>0</sub> of rally 0
+            	t<sub>1</sub> f<sub>1</sub>		<- Duration t<sub>1</sub> and deadline f<sub>1</sub> of rally 1
+            	t<sub>2</sub> f<sub>2</sub>		<- Duration t<sub>2</sub> and deadline f<sub>2</sub> of rally 2
+		.
+		.
+		.
+		t<sub>n-1</sub> f<sub>n-1</sub>		<- Duration t<sub>n-1</sub> and deadline f<sub>n-1</sub> of rally n-1	    </pre>
+
+	    <p>For example:</p>
+            <pre class="prettyprint">
+        6		<- Serena needs to play 6 rallies
+        5 16		<- Rally 0 has a duration of 5 and needs to finish by 16
+        7 18    	<- Rally 1 has a duration of 7 and needs to finish by 18
+        10 28		<- Rally 2 has a duration of 10 and needs to finish by 28
+        12 45		<- Rally 3 has a duration of 12 and needs to finish by 45
+        4 11		<- Rally 4 has a duration of 4 and needs to finish by 11
+        3 29		<- Rally 5 has a duration of 3 and needs to finish by 29
+	    </pre>
+
+	    <h4>Output</h4>
+	    	<p> If you decide that Serena should play out all the rallies, you should output a list of pairs (rally ID, rally start time).</p>
+
+            <p> If you decide that the only option Serena has is to nuke <code>TennisSuperVillian</code>'s hideout, output an empty list.</p>
+            <!--<br> Java - array <br> Python - list <br> C++ - vector</p>-->
+            <!--- Need to change this -->
+	    <pre class= "prettyprint">
+            	[(i<sub>0</sub>, s<sub>0</sub>), (i<sub>1</sub>, s<sub>1</sub>), .... , (i<sub>n</sub>, s<sub>n</sub>)]        <- rally i<sub>0</sub> starts at time s<sub>0</sub>
+                                                            rally i<sub>1</sub> starts at time s<sub>1</sub>
+                					    .
+                					    .
+                					    .
+                                                            rally i<sub>n</sub> starts at time s<sub>n</sub>
+	    </pre>
+            <p>For example, using the example input from above: </p>
+            <pre class= "prettyprint">
+           	[(4, 0), (0, 4), (1, 9), (2, 16), (5, 26), (3, 29)]		<- rally 4 starts at time 0
+                                    						   rally 0 starts at time 4
+                                    						   rally 1 starts at time 9
+                                                                                   rally 2 starts at time 16
+                                    						   rally 5 starts at time 26
+                                                                                   rally 3 starts at time 29
+	       </pre>
+
+        <div class="bs-callout bs-callout-danger">
+            <h4><i class="fa fa-code"></i> Note</h4>
+            	<p>If your algorithm decides that Serena should play out all the rallies, your output schedule might not match the corresponding output file. That is fine. As long as all the rallies in your schedule finish by their respective deadlines, the grader will give you full points.</p>
+        </div>
+
+        <div class="bs-callout bs-callout-warning">
+            <h4><i class="fa fa-exclamation"></i> Rally IDs</h4>
+                <p>Note that the rally IDs are given <i>implicitly</i> with the input so make sure if you move things around in the input list, then you explicitly need to remember the original rally ID.</p>
+        </div>
+
+        </div>
+        <div class="bs-callout bs-callout-danger">
+            <h4><i class="fa fa-exclamation"></i> Note</h4>
+            <p><strong>Both the input and output parsers in each of the three languages are already written for you.</strong>
+            </br>Note that you have to work with the input data structures provided (which will come pre-loaded with the data from an input file).
+        </div>
+
+        <div class="bs-callout bs-callout-danger">
+            <h4><i class="fa fa-exclamation"></i> Addition is the only change you should make</h4>
+                <p>Irrespective of what language you use, you will have to submit just one file. That file will come pre-populated with some stuff in it. You should <strong>not</strong> change any of those things because if you do you might break what the grader expects and end up with a zero on the question. You should of course add stuff to it (including helper functions and data structures as you see fit).
+                </p>
+        </div>
+
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#java">Java</a></li>
+                            <li><a data-toggle="tab" href="#python">Python</a></li>
+                            <li><a data-toggle="tab" href="#cpp">C++</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div id="java" class="tab-pane fade in active">
+                                </br>
+                                <a href="HW5Java.zip" class="btn btn-primary" role="button">Download Java Skeleton Code</a></br>
+                                <h4>Directory Structure</h4>
+                                <pre>
+                                    ├── src
+                                    │   ├── ub
+                                    │       ├── cse
+                                    │           ├── algo
+                                    │               ├── Driver.java
+                                    │               ├── Solution.java
+                                    ├── testcases/
+                                    │   ├── input1.txt
+                                    │   ├── input2.txt
+                                    │   ├── input5.txt
+                                    ├── outputs/
+                                    │   ├── output1.txt
+                                    │   ├── output2.txt
+                                    │   └── output5.txt</pre>
+                                <p>You are given two coding files: <code>Driver.java</code> and <code>Solution.java</code>. <code>Driver.java</code> takes the input file, parses it and creates an instance of the class and prints the result to the command line. You only need to update the <code>Solution.java</code> file. You may write your own helper methods and data structures in it.</p>
+                                <p>The testcases folder has 3 input files and their corresponding output files for your reference. We will use these three input files (and seven others) in our autograding. The output files provided are not the ONLY solutions. They only represent ONE possible way Serena could schedule her rallies.</p>
+                                <h4>Method you need to write:</h4>
+                                <pre class= "prettyprint linenums lang-java">
+                                    /**
+                                     * You should fill this in on your own. Rallies is list of tuples, in the form (rally duration, rally deadline).
+                                     * Your output should also be a list of tuples, of the form (rally id, start time of rally). If no possible
+                                     * schedule exists, you should return an empty list.
+                                     * @return
+                                     */
+                                    public ArrayList<int[]> getSchedule() {
+
+                                        ArrayList<int[]> schedule = new ArrayList<>();
+
+                                        return schedule;
+                                    }</pre>
+                                <p>The <code>Solution</code> class has 2 instance variables:
+                                <ul>
+                                    <li><code>private ArrayList&lt;int[]&gt; _rallies;</code> which is a list of tuples representing the input from the file. The pairs are of the form (rally duration, rally deadline). The index of the tuple in the list is that rally's ID (for example, if the tuple under consideration is the $0^{\text{th}}$ element in the list then its ID will be $0$).</li>
+                                    <li><code>private int _n_rallies;</code> which is the number of rallies.
+                                </ul>
+                                    The output of the code is an <code>ArrayList&lt;int[]&gt;</code>. However, this time, the tuples should be of the form (rally id, start time of rally). If Serena takes the first option, then output an empty <code>ArrayList</code>.
+                                </p>
+
+                                    </p>
+                                <h4>Compiling and executing from command line:</h4>
+                                <p>Assuming you're in the same directory level as <code>Driver.java</code>. Run <kbd>javac src/ub/cse/algo/*.java</kbd> to compile.</p>
+                                <p>To execute your code on <code>input1.txt</code>, run <kbd>java -cp "src" ub.cse.algo.Driver testcases/input1.txt</kbd>. The output will be printed to <code>stdout</code>.</p>
+
+                                <h4>Submission</h4>
+                                <p>You only need to submit <code>Solution.java</code> to Autolab.</p>
+                            </div>
+                            <div id="python" class="tab-pane fade">
+                                </br>
+                                <a href="HW5Python.zip" class="btn btn-primary" role="button">Download Python Skeleton Code</a></br>
+                                <h4>Directory Structure</h4>
+                                <pre>
+                                    ├── Driver.py
+                                    ├── Solution.py
+                                    ├── testcases/
+                                    │   ├── input1.txt
+                                    │   ├── input2.txt
+                                    │   ├── input5.txt
+                                    ├── outputs/
+                                    │   ├── output1.txt
+                                    │   ├── output2.txt
+                                    │   └── output5.txt</pre>
+                                <p>You are given two coding files: <code>Driver.py</code> and <code>Solution.py</code>. <code>Driver.py</code> takes the input file, parses it and calls your <code>getSchedule</code> method on data structures it creates. It then prints the list your code returns. You only need to update the <code>Solution.py</code> file. You may write your own helper methods and data structures in it.</p>
+                                <p>The testcases folder has 3 input files and their corresponding output files for your reference. We will use these three input files (and seven others) in our autograding. The output files provided are not the ONLY solutions. They only represent ONE possible way Serena could schedule her rallies.</p>
+                                <h4>Method you need to write:</h4>
+                                <pre class= "prettyprint linenums lang-python">
+                                def getSchedule(self):
+                                    ################# YOUR CODE GOES HERE ##################
+                                    return [] #return empty list for now
+
+                                </pre>
+                                <p>The <code>Solution</code> class has one instance variable. </p>
+                                <ul>
+                                    <li><code>rallies</code> which is a list of <code>2-tuples</code>, with each tuple corresponding to a rally. The first element of the tuple will be the duration of the rally and the second element will be its deadline. The index of the tuple in the list is that rally's ID (for example, if the tuple under consideration is the $0^{th}$ element in the list then its ID will be 0).</li>
+
+                                </ul>
+				<p> Your method is expected to return a <code>list</code>
+where every element is a <code>2-tuple</code> of (rally ID, start time) if Serena chooses to play out all the rallies, or an empty list if she chooses to nuke <code>TennisSuperVillain</code>'s hideout.</p>
+
+                                <h4>Executing from command line:</h4>
+                                <p>Assuming you're in the same directory level as <code>Driver.py</code> and you want to run your code on the <code>input1.txt</code>.  Run <kbd>python Driver.py testcases/input1.txt</kbd>.</p>
+                                <h4>Submission</h4>
+                                <p>You only need to submit <code>Solution.py</code> to Autolab.</p>
+                            <!--</div>-->
+                            </div>
+                            <div id="cpp" class="tab-pane fade">
+
+                                </br>
+                                <a href="HW5C++.zip" class="btn btn-primary" role="button">Download C++ Skeleton Code</a></br>
+                                <h4>Directory Structure</h4>
+                                <pre>
+                                    ├── Driver.cpp
+                                    ├── Solution.cpp
+                                    ├── testcases/
+                                    │   ├── input1.txt
+                                    │   ├── input2.txt
+                                    │   ├── input5.txt
+                                    ├── outputs/
+                                    │   ├── output1.txt
+                                    │   ├── output2.txt
+                                    │   └── output5.txt</pre>
+                                <p>You are given two coding files: <code>Driver.cpp</code> and <code>Solution.cpp</code>. <code>Driver.cpp</code> takes the input file, parses it and creates an instance of the class <code>Solution</code> and calls the <code>outputRallies()</code> method on it. It then prints the schedule produced. You only need to update the <code>Solution.cpp</code> file. You may write your own helper methods and data structures in it.</p>
+                                <p>The testcases folder has 3 input files and their corresponding output files for your reference. We will use these three input files (and seven others) in our autograding. The output files provided are not the ONLY solutions. They only represent an example of a schedule from each of the inputs.</p>
+
+                                <h4>Method you need to write:</h4>
+                                <pre class= "prettyprint linenums lang-cpp">
+                                    vector&lt;pair&lt;int,int&gt;&gt; Solution::outputRallies() {
+                                        /*
+                                         * Implement the solution in this function
+                                         * Return a vector of pairs of int containing the Rally ID and start time of the schedule you computed
+                                         * or an empty vector of pairs of int if there exists no valid schedule and Serena has to take the nuke option.
+                                         *
+                                         * Don't change any files but this one!
+                                         */
+                                        return vector&lt;pair&lt;int,int&gt;&gt;();
+                                    }
+                                </pre>
+                                <p>Note: The output for this function must output a <code>vector</code> of <code>pairs</code> of <code>int</code>. Each element represents a unique rally where the first value is the rally ID and the second value is the start time that you calculated.</p>
+                                <p>If there is no valid schedule, return an empty vector.</p>
+                                <p>The <code>Solution</code> class has 1 member variable. </p>
+                                <ul>
+                                    <li><code>rallies</code> which is a vector of pairs where the first value of each pair represents the time duration of the rally, and the second value represents the deadline of the rally. The index of each pair represents the rally id.</li>
+                                </ul>
+                                <h4>Compiling and executing from command line:</h4>
+                                <p>Assuming you're in the same directory level as <code>Driver.cpp</code>. Run <kbd>g++ -std=c++11 Driver.cpp</kbd> to compile.</p>
+                                <p>To execute your code on <code>input1.txt</code>, run <kbd>./a.out testcases/input1.txt</kbd>.</p>
+                                <h4>Submission</h4>
+                                <p>You only need to submit <code>Solution.cpp</code> to Autolab.</p>
+                            </div>
+                        </div>
+                                <h3>Grading Guidelines</h3>
+                                        <p>We will follow the <a href="../../policies/hw-policy.html#grading">usual grading guidelines for programming questions</a>.</p>
+
+<!--
+                                <div class="bs-callout bs-callout-danger">
+                                    <h4><i class="fa fa-exclamation"></i> For those of you who are feeling a little ambitious</h4>
+                                        <p>For the top 3 submissions in the scoreboard in both Java and Python  and for the top 2 submissions in the scoreboard in C++, we are offering 4 bonus points. But be warned! You should not be spending too much time on this. We rather you work on Questions 2 and 3 below.
+                                        </p>
+                                </div>
+-->
+
+
+
+    </div> <!-- /container -->
+
+<!--- Footer --->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="footer-copyright wow fadeIn">
+                        <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
+                    </div>
+                    <div class="col-sm-5 footer-social wow fadeIn">
+                    </div>
+                </div>
+            </div>
+        </footer>
+<!--
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">Built with <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="http://p5js.org/">p5</a> and <a href="http://www.bigfootjs.com/">bigfoot</a>.</p>
+      </div>
+    </footer>
+-->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!--<script src="../../assets/js/docs.min.js"></script>-->
+
+  <!--- Google prettify for syntax highlighting-->
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+  <!--- MathJax for LaTeX-->
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+  </script>
+  <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+
+  <!-- JS for Tocify -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  <script src="../../js/jquery.tocify.min.js"></script>
+<!--  <script type="text/javascript">
+    $("#toc").tocify();
+  </script>
+-->
+
+  <!-- Bigfoot for footnotes-->
+  <script type="text/javascript" src="../../../support/js/bigfoot.js"></script>
+  <script type="text/javascript">
+        $.bigfoot();
+  </script>
+
+  <!-- uncomment lines below to include extra p5 libraries -->
+        <!--<script language="javascript" src="../addons/p5.dom.js"></script>-->
+    <!--<script language="javascript" src="../addons/p5.sound.js"></script>-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.6/p5.js"></script>
+
+  </body>
+</html>
