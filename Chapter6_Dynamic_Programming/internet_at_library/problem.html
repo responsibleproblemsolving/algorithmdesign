@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>High Speed Internet at Library Problem</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Callout css from Chris Pratt: http://cpratt.co/twitter-bootstrap-callout-css-styles/--->
+    <link href="css/callout.css" rel="stylesheet">
+    <!-- Font awesome-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  </head>
+
+  <body role="document">
+
+    <!-- Fixed navbar -->
+        <div id="nav-content"></div>
+
+    <!-- TOC -->
+    <div id="toc"></div>
+
+    <div class="container theme-showcase" role="main">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>High Speed Internet</h1>
+            <p>Dyanmic Programming algorithm problem.</p>
+            <p>Here are <a href="notes.html">some extra notes</a> that can be used in a recitation</p>
+            <p><i>Material Developed by:</i> <a href="https://cse.buffalo.edu/faculty/atri/">Atri Rudra</a></p>
+      </div>
+
+
+     <div class="page-header">
+
+<!--
+  <div class="footnotes"><ol>
+        <li class="footnote" id="fn:1">
+                    <p>Lest you think I have anything against liberals, let me assure you that my brother-in-law has “termed" me and my wife as
+being liberal elites.</p>
+        </li>
+    </ol>
+  </div>
+-->
+
+            <div class="bs-callout bs-callout-warning">
+                <h4>Context of this assignment</h4>
+                <p>This problem is part of a series of assignments in an <a href="http://www-student.cse.buffalo.edu/~atri/cse331/fall19/index.html">UG algorithms course <i class="fa fa-external-link fa-sm"></i></a> that are all related to access to high speed Internet. 
+                </p>
+                <p>Here are some <a href="http://www-student.cse.buffalo.edu/~atri/cse331/fall19/SIGCSE2020.pptx">slides <i class="fa fa-external-link fa-sm"></i></a> from a talk that gives an overview of these assignments.
+                </p>
+            </div>
+
+
+           <div class="bs-callout bs-callout-primary">
+            <h4>The Problem</h4>
+		<p>Unfortunately it turns out that after all the work you put into designing a <a href="../../Chapter4_Greedy_Algorithms/high_speed_internet/problem.html">greedy algorithm</a> to designing optimal placement of cell towers to give Internet access to everyone in <code>SomePlaceInUSA</code>, the funding for putting up the cell towers fell through. Fortunately, there is a small glimmer of hope in that the town was able to secure a small grant to install a  high speed Internet connection to one computer in the town's library. In this problem you will explore how effectively the town can share the resource of this one computer among the needy citizens of <code>SomePlaceInUSA</code> in order to maximize the social good that this computer with high speed Internet connection can provide to the town as a whole.</p>
+		<p>Residents of <code>SomePlaceInUSA</code> have applied to use the library's high speed Internet computer. Each of the $n$ citizens provide the following information. The $i$'th citizen submits a tuple $(s_i,f_i,w_i)$, where $s_i$ and the $f_i&gt;s_i$ are the start and finish times of when the applicant plans to use the computer every weekday; $w_i$ is their estimation of the worth of getting to use the terminal from $s_i$ to $f_i$. (Note: the larger the value of $w_i$ the better for citizen $i$ and you can assume that $w_i\ge 0$ are integers.)</p>
+		<p>Your initial goal is to determine the <i>maximum worth</i> among all <code>valid</code> subset of citizens $S\subseteq [n]$. A subset $S$ is <code>valid</code> if  the start and finish times of any citizen $i\neq j\in S$ do not conflict (i.e. either $s_i&gt; f_j$ or $s_j&gt; f_i$). Further, the worth of a subset is \[w(S)=\sum_{i\in S} w_i.\]
+            <div class="bs-callout bs-callout-info">
+            <h4>Sample Input/Output</h4>
+                <p>Here is a sample input/output pair (the input array is stated as $[(s_1,f_1,w_1),\dots,(s_n,f_n,w_n)]$) for $n=3$:
+                    <ul>
+                        <li> <code>Input:</code> $[(1,4,10),(5,10,20),(1,10,100)]$.<br>
+			<code>Output:</code> $100$ (for the subset $\{3\}$).</li>
+                    </ul>
+                </p>
+            </div>
+		However, as time goes by the town realizes that solving the above problem is not necessarily the best for the overall good of the town. In the rest of the problem, you will design algorithms to maximize the total worth of your chosen subset along with some additional constraints to address some potential inequalities in your solution.</p>
+		<ul>
+			<li>Part <kbd>(a)</kbd>: Citizens of <code>SomePlaceInUSA</code> realize that the current problem as stated above could be monopolized by a citizen who (perhaps legitimately) can get a huge worth by using the computer terminal for the entire day. They come to you to help them solve the following updated version of the problem:
+				<ul>
+					<li> The input to your algorithm is now the set of triples $\{(s_i,f_i,w_i)|i\in [n]\}$ along with an integer threshold $\tau\ge 0$. Your algorithm should
+output the maximum worth among all <code>valid</code> subset $S\subseteq [n]$ with $|S|\ge \tau$.
+ and output one with the maximum worth among all such <code>valid</code> subsets (of size at least $\tau$). Note that the optimal worth can be $0$ (if there is no <code>valid</code> subset of size at least $\tau$).
+					</li>
+            <div class="bs-callout bs-callout-info">
+            <h4>Sample Input/Output</h4>
+                <p>Here is a sample input/output pair (the input is stated as $\tau;[(s_1,f_1,w_1),\dots,(s_n,f_n,w_n)]$):
+                    <ol>
+                        <li> <code>Input:</code> $2;[(1,4,10),(5,10,20),(1,10,100)]$.<br>
+			<code>Output:</code> $30$ (for valid subset $\{1,2\}$).</li>
+                        <li> <code>Input:</code> $3;[(1,4,10),(5,10,20),(1,10,100)]$.<br>
+			<code>Output:</code> $0$ (since there is no valid subset of size $3$).</li>
+                    </ol>
+                </p>
+            </div>
+				</ul>
+        Design an $O(n^2)$ algorithm to solve the above problem.<br><br>
+			</li>
+			<li>Part <kbd>(b)</kbd>: (Thanks to <a href="https://www.law.buffalo.edu/faculty/facultyDirectory/manes-jonathan.html" target="_blank">Jonathan Manes <i class="fa fa-external-link fa-sm"></i></a> for advice on legal aspects of this part of the question.)  Citizens of <code>SomePlaceInUSA</code> realize that the current problem as stated above might not be representative of their town. In particular, they would like the <code>valid</code> subset to be representative of the economic diversity of their town. In particular, now they want your solution to meet some more requirements:
+                                <ul>
+                                        <li> <p>The input to your algorithm is now the set of $4$-tuples $\{(s_i,f_i,w_i,e_i)|i\in [n]\}$ (where $s_i,f_i,w_i$ are as before and $e_i\in \{1,2,3\}$ being an identifier for the range of their household income) along with there real numbers $0\le \rho_1,\rho_2,\rho_3\le 1$ such that $\rho_1+\rho_2+\rho_3\le 1$. Your algorithm should
+output the maximum worth among all  <code>valid</code> subset $S\subseteq [n]$ with the following minimum requirement of the economic diversity-- for every $j\in [3]$, we must have
+\[\left|\{i\in S|e_i=j\}\right|\ge \rho_j\cdot |S|.\]
+Note that the optimal worth can be $0$ (if there is no <code>valid</code> subset that can meet the economic diversity constraint).
+                                        </li>
+            <div class="bs-callout bs-callout-info">
+            <h4>Sample Input/Output</h4>
+                <p>Here is a sample input/output pair (the input is stated as $(\rho_1,\rho_2,\rho_3);[(s_1,f_1,w_1,e_1),\dots,(s_n,f_n,w_n,e_n)]$):
+                    <ol>
+                        <li> <code>Input:</code> $\left(\frac 13, \frac 12, 0\right);[(1,4,10,1),(5,10,20,2),(1,10,100,3)]$.<br>
+                        <code>Output:</code> $30$ (for the valid subset $\{1,2\}$).</li>
+                        <li> <code>Input:</code> $\left(\frac 13, \frac 13, \frac13\right);[(1,4,10,1),(5,10,20,2),(1,10,100,3)]$.<br>
+                        <code>Output:</code> $0$ ($\emptyset$ is the only valid subset that satisfies the economic diversity constraint).</li>
+                    </ol>
+                </p>
+            </div>
+                                </ul>
+                Design an $O(n^5)$ time algorithm to solve the above problem.</p>
+			</li>
+		<ul>
+            </div>
+
+            <div class="bs-callout bs-callout-success">
+            <h4><i class="fa fa-key"></i> Hint</h4>
+                <p>It <i>might</i> be useful to think of sub-problems that generalize the ones we saw in weighted interval scheduling (but the recurrence would look different).</p>
+            </div>
+
+                    <h3>Walkthrough video</h3>
+                <p>
+Thanks to <a href="https://www.linkedin.com/in/imanabdul/" target="_blank">Iman Abdul-Rashed <i class="fa fa-external-link fa-sm"></i></a> for the video:
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe class="embed-responsive-item" width="50%" src="https://youtube.com/embed/nrfuQ5qJvdQ" allowfullscreen></iframe>
+                            </div>
+                    </div>
+                </div>
+                </p>
+
+
+
+
+
+
+    </div> <!-- /container -->
+
+<!--- Footer --->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="footer-copyright wow fadeIn">
+                        <p>Copyright &copy 2020 Atri Rudra <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
+                    </div>
+                    <div class="col-sm-5 footer-social wow fadeIn">
+                    </div>
+                </div>
+            </div>
+        </footer>
+<!--
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">Built with <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="http://p5js.org/">p5</a> and <a href="http://www.bigfootjs.com/">bigfoot</a>.</p>
+      </div>
+    </footer>
+-->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!--<script src="../../assets/js/docs.min.js"></script>-->
+
+  <!--- Google prettify for syntax highlighting-->
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+  <!--- MathJax for LaTeX-->
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+  </script>
+  <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+
+  <!-- JS for Tocify -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  <script src="../../js/jquery.tocify.min.js"></script>
+<!--  <script type="text/javascript">
+    $("#toc").tocify();
+  </script>
+-->
+
+  <!-- Bigfoot for footnotes-->
+  <script type="text/javascript" src="../../../support/js/bigfoot.js"></script>
+  <script type="text/javascript">
+        $.bigfoot();
+  </script>
+
+  <!-- uncomment lines below to include extra p5 libraries -->
+        <!--<script language="javascript" src="../addons/p5.dom.js"></script>-->
+    <!--<script language="javascript" src="../addons/p5.sound.js"></script>-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.6/p5.js"></script>
+
+  </body>
+</html>

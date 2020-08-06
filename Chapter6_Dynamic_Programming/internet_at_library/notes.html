@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Notes for High Speed Internet at the Library Problem</title>
+
+    <!-- Bootstrap core CSS -->
+    <!-- <link href="../../bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Callout css from Chris Pratt: http://cpratt.co/twitter-bootstrap-callout-css-styles/--->
+    <link href="css/callout.css" rel="stylesheet">
+    <!-- Font awesome-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  </head>
+
+  <body role="document">
+
+
+    <!-- TOC -->
+    <div id="toc"></div>
+
+    <div class="container theme-showcase" role="main">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Notes for High Speed Internet at the Library problem</h1>
+            <p>Notes for the <a href="problem.html">High Speed Internet at the library problem</a>.</p>
+            <p><i>Material Developed by:</i> <a href="https://cse.buffalo.edu/faculty/atri/">Atri Rudra</a></p>
+      </div>
+
+
+     <div class="page-header">
+
+  <h2>Part <kbd>(a)</kbd></h2>
+
+        <p>For sake of completeness, we repeat the problem statement:
+            <div class="bs-callout bs-callout-primary">
+            <h4>The Problem</h4>
+                <p>Citizens of <code>SomePlaceInUSA</code> realize that the current problem as stated above could be monopolized by a citizen who (perhaps legitimately) can get a huge worth by using the computer terminal for the entire day. They come to you to help them solve the following updated version of the problem:
+                                <ul>
+                                        <li> The input to your algorithm is now the set of triples $\{(s_i,f_i,w_i)|i\in [n]\}$ along with an integer threshold $\tau\ge 0$. Your algorithm should
+output the maximum worth among all <code>valid</code> subset $S\subseteq [n]$ with $|S|\ge \tau$.
+ and output one with the maximum worth among all such <code>valid</code> subsets (of size at least $\tau$). Note that the optimal worth can be $0$ (if there is no <code>valid</code> subset of size at least $\tau$).
+                                        </li>
+            <div class="bs-callout bs-callout-info">
+            <h4>Sample Input/Output</h4>
+                <p>Here is a sample input/output pair (the input is stated as $\tau;[(s_1,f_1,w_1),\dots,(s_n,f_n,w_n)]$):
+                    <ol>
+                        <li> <code>Input:</code> $2;[(1,4,10),(5,10,20),(1,10,100)]$.<br>
+                        <code>Output:</code> $30$ (for valid subset $\{1,2\}$).</li>
+                        <li> <code>Input:</code> $3;[(1,4,10),(5,10,20),(1,10,100)]$.<br>
+                        <code>Output:</code> $0$ (since there is no valid subset of size $3$).</li>
+                    </ol>
+                </p>
+            </div>
+                                </ul>
+        Design an $O(n^2)$ algorithm to solve the above problem.</p>
+            </div>
+
+            <div class="bs-callout bs-callout-info">
+            <h4>Algorithm Idea</h4>
+                <p>We first make the observation that if we have $\tau=0$, then we have to find the maximum worth among all <code>valid</code> subsets. However, note that in this case we <i>exactly</i> have the weighted interval scheduling problem, where the value of the $i$'th interval $[s_i,f_i]$ is $w_i$.</p>
+                <p>So the main idea is to extend the notion of sub-problems from the weighted interval scheduling problem to handle the extra constraint of the lower bound on the size of the subset. In particular let $OPT(j,t)$ denote the maximum worth among all <code>valid</code> subsets of size at least $t$ for the sub-problem where we are only given $(s_1,f_1,w_1),\dots,(s_j,t_j,w_j)$ as the input (i.e. we only consider the first $j$ citizens). All we now need to do is to determine the recurrence relation and note that the algorithm needs to output $OPT(n,\tau)$.</p>
+                <p>We start off with the base case. Note that if $t&gt; j$, then there is no possible <code>valid</code> solution of size $t$ and hence we set $OPT(j,t)=-\infty$. Also trivially $OPT(0,0)=0$.</p>
+                <p>Let us now consider the general case with $t\le j$. We now have two choices:
+                    <ol>
+                        <li> <kbd>Case 1</kbd>: $j$ is not in any optimal <code>valid</code> subset. In this case, we have that $OPT(j,t)=OPT(j-1,t)$. The argument is similar to what we had for similar case for the weighted interval scheduling: for sake of contradiction assume that $OPT(j,t) &gt; OPT(j-1,t)$ and since any optimal solution achieving this worth does not have $j$ in it, such a solution would also be a valid solution for the input with the fist $j-1$ citizens (and same threshold of $t$), which would contradict the definition of $OPT(j-1,t)$.
+                        </li>
+                        <li> <kbd>Case 2</kbd>: $j$ is in some optimal <code>valid</code> subset (let's call this optimal subset $\mathcal{O}_j$). Then the claim is that $w(\mathcal{O}_j\setminus \{j\})=OPT(p(j),t-1)$, where $p(j)$ is defined <i>exactly</i> as it is for the weighted interval scheduling problem. The argument again follows from a similar argument that we used in this case for the weighted interval scheduling problem. In particular, we claim that $\mathcal{O}_j\setminus \{j\}$ is also an optimal solution for the input on the first $p(j)$ citizens and a threshold of $t-1$ (if not, there exists a solution $\mathcal{O}'$ that has worth $&gt; w(\mathcal{O}_j\setminus \{j\}$ is better for this smaller problem instance. In such a case, note that $\mathcal{O}' \cup \{j\}$ is a valid solution for the problem on the first $j$ citizens and threshold $t$ and has value $&gt; w_j + w(\mathcal{O}_j\setminus \{j\} = w(\mathcal{O}_j)$, which contradicts the fact that $\mathcal{O}_j$ is optimal for the $(j,t)$ sub-problem.) Thus, we have $OPT(j,t)=w_j+OPT(p(j),t-1)$ in this case.
+                        </li>
+                    </ol>
+                </p>
+                <p>So overall the recurrence for the optimal worth is given by (for $0\le j,t\le n$):
+                    \[OPT(j,t)=\begin{cases}
+                            -\infty & \text{ if } j&lt; t \\
+                            0 & \text{ if } j=t=0\\
+                            \max\left\{ OPT(j-1,t), w_j+OPT(p(j),t-1)\right\} & \text{otherwise}
+                        \end{cases}.\]
+                    To finish off the algorithm idea note that we can compute all the $OPT(\cdot,\cdot)$ values if we compute them increasing order of $j$ (for each fixed $j$, the order of $t$ does not matter). Finally, we just output $\max(0,OPT(n,\tau))$ (we do the $\max$ to make sure if the value of $OPT(n,\tau)=-\infty$, then we make it $0$ as required by the problem statement).
+                </p>
+            </div>
+
+            <div class="bs-callout bs-callout-info">
+            <h4>Algorithm Details</h4>
+                <p>Even this is not needed in your solution, we present the algorithm details below:</p>
+                        <p>
+                        <pre class="prettyprint linenums" lang="python">
+                            # Input: Integers t, n and triples (s<sub>1</sub>, f<sub>1</sub>, w<sub>1</sub>), ..., (s<sub>n</sub>, f<sub>n</sub>, w<sub>n</sub>)
+                            # Also assume we know p(j) for every j = 0 .. n
+
+                            if t &gt; n
+                                return 0
+
+                            Allocate an (n+1) X (n+1) array M #M[j][k] will ultimately store OPT(j,k)
+
+                            M[0][0]=0
+
+                            for every k = 1 .. n
+                                M[0][k] = -infty 
+
+                
+
+                            for every j = 1 .. n
+                                for every k = 0 .. n
+                                    if j &lt; k
+                                        M[j][k] = -infty
+                                    else
+                                        M[j][k] = max ( M[j-1][k], w<sub>j</sub>  + M[p(j)][k-1]
+
+                            return max(M[n][t],0)
+                        </pre>
+                        </p>
+                </div>
+
+            <p>We are almost done with part <kbd>(a)</kbd> except for the following, which is left as an exercise for you:
+            <div class="bs-callout bs-callout-warning">
+            <h4>Exercise 2</h4>
+                <p>Argue that the above algorithm runs in $O(n^2)$ time.</p>
+            </p>
+            </div>
+
+
+        <h2>Part <kbd>(b)</kbd></h2>
+            <div class="bs-callout bs-callout-primary">
+            <h4>The Problem</h4>
+                <p> 
+ Citizens of <code>SomePlaceInUSA</code> realize that the current problem as stated above might not be representative of their town. In particular, they would like the <code>valid</code> subset to be representative of the economic diversity of their town. In particular, now they want your solution to meet some more requirements:
+                                <ul>
+                                        <li> <p>The input to your algorithm is now the set of $4$-tuples $\{(s_i,f_i,w_i,e_i)|i\in [n]\}$ (where $s_i,f_i,w_i$ are as before and $e_i\in \{1,2,3\}$ being an identifier for the range of their household income) along with there real numbers $0\le \rho_1,\rho_2,\rho_3\le 1$ such that $\rho_1+\rho_2+\rho_3\le 1$. Your algorithm should
+output the maximum worth among all  <code>valid</code> subset $S\subseteq [n]$ with the following minimum requirement of the economic diversity-- for every $j\in [3]$, we must have
+\[\left|\{i\in S|e_i=j\}\right|\ge \rho_j\cdot |S|.\]
+Note that the optimal worth can be $0$ (if there is no <code>valid</code> subset that can meet the economic diversity constraint).
+                                        </li>
+            <div class="bs-callout bs-callout-info">
+            <h4>Sample Input/Output</h4>
+                <p>Here is a sample input/output pair (the input is stated as $(\rho_1,\rho_2,\rho_3);[(s_1,f_1,w_1,e_1),\dots,(s_n,f_n,w_n,e_n)]$):
+                    <ol>
+                        <li> <code>Input:</code> $\left(\frac 13, \frac 12, 0\right);[(1,4,10,1),(5,10,20,2),(1,10,100,3)]$.<br>
+                        <code>Output:</code> $30$ (for the valid subset $\{1,2\}$).</li>
+                        <li> <code>Input:</code> $\left(\frac 13, \frac 13, \frac13\right);[(1,4,10,1),(5,10,20,2),(1,10,100,3)]$.<br>
+                        <code>Output:</code> $0$ ($\emptyset$ is the only valid subset that satisfies the economic diversity constraint).</li>
+                    </ol>
+                </p>
+            </div>
+                                </ul>
+                Design an $O(n^5)$ time algorithm to solve the above problem.</p>
+            </div>
+
+            <p>We do not have much to say for part <kbd>(b)</kbd> except to say:
+            <div class="bs-callout bs-callout-success">
+            <h4><i class="fa fa-key"></i> Hint</h4>
+                <p>Try to extend the dynamic program of part <kbd>(a)</kbd> to work for part <kbd>(b)</kbd>. It <i>might</i> be useful to think of each sub-problem being indexed by a $5$-tuple (where each entry in the tuple can have $O(n)$ possibilities).</p>
+            </div>
+            </p>
+
+
+    </div> <!-- /container -->
+
+<!--- Footer --->
+
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="footer-copyright wow fadeIn">
+                        <p> Copyright &copy 2020 Atri Rudra <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
+                    </div>
+                    <div class="col-sm-5 footer-social wow fadeIn">
+                    </div>
+                </div>
+            </div>
+        </footer>
+<!--
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">Built with <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="http://p5js.org/">p5</a> and <a href="http://www.bigfootjs.com/">bigfoot</a>.</p>
+      </div>
+    </footer>
+-->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!--<script src="../../assets/js/docs.min.js"></script>-->
+
+	<!--- Google prettify for syntax highlighting-->
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+	<!--- MathJax for LaTeX-->
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+  		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+
+	<!-- JS for Tocify -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<script src="../../js/jquery.tocify.min.js"></script>
+<!--	<script type="text/javascript">
+		$("#toc").tocify();
+	</script>
+-->
+
+	<!-- Bigfoot for footnotes-->
+	<script type="text/javascript" src="../../../support/js/bigfoot.js"></script>
+	<script type="text/javascript">
+    		$.bigfoot();
+	</script>
+
+	<!-- uncomment lines below to include extra p5 libraries -->
+        <!--<script language="javascript" src="../addons/p5.dom.js"></script>-->
+  	<!--<script language="javascript" src="../addons/p5.sound.js"></script>-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.6/p5.js"></script>
+
+  </body>
+</html>
