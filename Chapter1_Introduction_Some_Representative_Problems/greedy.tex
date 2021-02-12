@@ -1,0 +1,45 @@
+
+\documentclass[12pt]{amsart}
+\usepackage{geometry} % see geometry.pdf on how to lay out the page. There's lots.
+ % or letter or a5paper or ... etc
+% \geometry{landscape} % rotated page geometry
+\usepackage{enumerate}
+\usepackage{url}
+\usepackage[]{algorithm2e}
+% See the ``Article customise'' template for come common customisations
+
+\title{Greedy Algorithms}
+%\author{\vspace{-.8in}}
+\date{} % delete this line to display the current date
+
+%%% BEGIN DOCUMENT
+\begin{document}
+
+\maketitle
+
+
+A presidential candidate is holding a large event at Independence Hall followed by many other events around the city of Philadelphia this coming weekend.  Additionally, the city has closed some roads to traffic so that restaurants can be outside during COVID.  Because of this, the usual traffic patterns are disrupted.  There are two types of disruption:
+\begin{itemize}
+\item road closures
+\item heavy traffic
+\end{itemize}
+Happily, the City of Philadelphia has created a planning app that allows you to find out, for a given time and a given block in the city, how long it will take to travel along that block at that time, and whether travel along the block is possible at that time.  Using the app, create an algorithm that will give you the fastest route from point $a$ to $b$ for a given time $t$.  Calls to the app take $O(1)$ time.  You may assume that the traffic along a block will only get WORSE throughout the weekend and that no blocks will reopen to traffic, but some might close.  I.e., for any time $t' >= t, f(a,b,t') >= f(a,b,t)$ where $f(a,b,t')$ is the time it takes to travel from $a$ to $b$ at time $t'$.
+~\\
+
+\begin{enumerate}[a)]
+\item Give a full Algorithm Design write-up for the algorithm you describe.
+\end{enumerate}
+~\\
+
+There's a residential neighborhood with small streets and children playing in the street right near many of the planned events.  Usually, it does not receive much traffic, but the residents complain that the algorithm you designed is routing everyone down their small streets.
+~\\
+
+\begin{enumerate}[a)]
+\setcounter{enumi}{1}
+\item Describe, in short paragraph form, what you could do to modify the algorithm to help the residents of the local neighborhood.
+\item Describe what the potential negative impacts of your proposed fix might be.
+\end{enumerate}
+
+
+
+\end{document}
