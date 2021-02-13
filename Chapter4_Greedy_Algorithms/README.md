@@ -4,3 +4,4 @@
 - [High Speed Internet](high_speed_internet) Students needs to design a greedy algorithm to place network towers (proof based question).
 - [Designing Routing Algorithms for an Internet Service Provider](spectrum_lawsuit) Students design routing algorithms to route packets for an Internet service provider based on various constraints (based on NY AG's lawsuit againt Spectrum). This is a coding project.
 - [College Scheduling Project](college_scheduling) A long term (~2 months) coding and research paper project where students design and analyze an automated scheduler for a college registrar.
+- [COVID Scheduling Project](covid_scheduling) A long term (~2 months) coding and research paper project where students design and analyze COVID scheduling (online versus in-person) for a college.  A COVID-related modification to the above college scheduling problem - it is harder than the above project.
